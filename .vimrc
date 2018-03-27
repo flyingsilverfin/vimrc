@@ -1,4 +1,5 @@
 runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
 
 " URL: http://vim.wikia.com/wiki/Example_vimrc
 " Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
@@ -94,7 +95,9 @@ set nostartofline
  
 " Display the cursor position on the last line of the screen or in the status
 " line of a window
+
 set ruler
+
  
 " Always display the status line, even if only one window is displayed
 set laststatus=2
@@ -126,7 +129,7 @@ set notimeout ttimeout ttimeoutlen=200
  
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
- 
+set paste "default to paste without auto indent" 
  
 "------------------------------------------------------------
 " Indentation options {{{1
@@ -138,9 +141,18 @@ set pastetoggle=<F11>
 set shiftwidth=4
 set softtabstop=4
 set expandtab
- 
+
+
 " Indentation settings for using hard tabs for indent. Display tabs as
 " four characters wide.
 "set shiftwidth=4
 "set tabstop=4
 
+
+
+" NerdTree options
+autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
