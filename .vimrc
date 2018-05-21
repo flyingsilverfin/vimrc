@@ -1,4 +1,5 @@
 runtime bundle/vim-pathogen/autoload/pathogen.vim
+
 execute pathogen#infect()
 
 " URL: http://vim.wikia.com/wiki/Example_vimrc
@@ -129,7 +130,7 @@ set notimeout ttimeout ttimeoutlen=200
  
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
-set paste "default to paste without auto indent" 
+set nopaste "default to no autoindent pasting so can use other key mappings
  
 "------------------------------------------------------------
 " Indentation options {{{1
@@ -146,9 +147,11 @@ set expandtab
 " Indentation settings for using hard tabs for indent. Display tabs as
 " four characters wide.
 "set shiftwidth=4
-"set tabstop=4
+set tabstop=8
 
-
+" create new splits to the right and below
+set splitbelow
+set splitright
 
 " NerdTree options
 autocmd vimenter * NERDTree
@@ -156,3 +159,30 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+
+filetype plugin on
+
+
+
+
+
+nmap <C-_>   <Plug>NERDCommenterToggle
+vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
+
+
+" Syntastic plugin settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes':   [],'passive_filetypes': ['tex'] }
+noremap <C-w>e :SyntasticCheck<CR>
+noremap <C-w>f :SyntasticToggleMode<CR>
+
+
+
